@@ -10,7 +10,7 @@ class TogglesClientProvider(
     configuration: Configuration
 ) extends AbstractModule {
   def configure() = {
-    val svcUrl = configuration.getString("webservices.toggles.url").getOrElse("")
+    val svcUrl = configuration.getString("webservices.toggles.url").get
     bind(classOf[String]).annotatedWith(Names.named("toggleServiceURL")).toInstance(svcUrl)
     bind(classOf[webservices.toggles.TogglesClientLike]).to(classOf[TogglesClient])
   }
