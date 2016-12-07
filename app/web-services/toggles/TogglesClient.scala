@@ -2,6 +2,7 @@ package webservices.toggles
 
 import play.api.Logger
 import play.api.libs.json._
+import play.api.Play.current
 import play.api.libs.ws._
 
 import scala.concurrent._
@@ -9,9 +10,9 @@ import scala.concurrent.duration._
 import spray.caching._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import models._
-import javax.inject.{Inject, Named}
+import javax.inject.Inject
 
-import com.google.inject.ImplementedBy
+import com.google.inject.name.Named
 
 // no idea about ttl just yet. Do they change much? The service is pretty snappy so could be less aggressive with the cache if useful
 // the dev toggle server returns about 260 toggles total right now
@@ -25,7 +26,6 @@ trait AllTogglesCache {
   def addToAllTogglesCache(key: String, toggles: Seq[Toggle]) = allTogglesCache(key, () => Future.successful(toggles))
 }
 
-@ImplementedBy(classOf[TogglesClient])
 trait TogglesClientLike extends IndividualToggleCache with AllTogglesCache {
   def getToggle(name: String): Future[Option[Toggle]]
   def getToggleState(name: String): Future[Option[Boolean]]
@@ -47,7 +47,7 @@ object TogglesClient {
   }
 }
 
-class TogglesClient @Inject() (@Named("togglesUrl") svcUrl: String, ws: WSClient) extends TogglesClientLike {
+class TogglesClient @Inject() (@Named("toggleServiceURL") svcUrl: String, @Named("CorrelationID") ws: WSClient) extends TogglesClientLike {
 
   // no idea about ttl just yet. Do they change much? The service is pretty snappy so could be less aggressive with the cache if useful
   // the dev toggle server returns about 260 toggles total right now
