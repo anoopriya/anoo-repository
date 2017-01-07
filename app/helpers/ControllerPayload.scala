@@ -75,7 +75,7 @@ trait ControllerPayload extends Controller {
   ////////////////////////
 
   def getRequestItem[T: Format](implicit request: Request[AnyContent]): T = {
-    val readJsonObject: Format[JsValue] = (__ \ "item").format[JsValue]
+    val readJsonObject: Format[JsValue] = (__).format[JsValue]
     getRequestBodyAsJson(request).validate(readJsonObject) match {
       case JsError(e) => throw new JsResultException(e)
       case JsSuccess(hbcStatusObject, _) =>
@@ -84,19 +84,6 @@ trait ControllerPayload extends Controller {
           case JsSuccess(hbcStatus, _) => hbcStatus
           case JsError(e)              => throw new JsResultException(e)
         }
-    }
-  }
-
-  def getRequestItems[T: Format](implicit request: Request[AnyContent]): Seq[T] = {
-    val readJsonObject: Format[Seq[JsValue]] = (__ \ "items").format[Seq[JsValue]]
-    getRequestBodyAsJson(request).validate(readJsonObject) match {
-      case JsError(e) => throw new JsResultException(e)
-      case JsSuccess(hbcStatusObjectList, _) =>
-        hbcStatusObjectList.map(hbcStatusObject =>
-          hbcStatusObject.validate[T] match {
-            case JsSuccess(hbcStatus, _) => hbcStatus
-            case JsError(e)              => throw new JsResultException(e)
-          })
     }
   }
 
