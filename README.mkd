@@ -231,3 +231,21 @@ All project dependencies will be downloaded and the configuration files will be 
 
 ## Additional Information  
 Resource: https://github.com/saksdirect/HBCPlatformDocs/blob/master/gettingStarted/backendDevWorkstation/README.md#additional-information
+
+##Known Issues
+
+```scala
+java.lang.NoClassDefFoundError: Could not initialize class play.api.http.DefaultHttpErrorHandler$
+	at play.core.server.Server$class.logExceptionAndGetResult$1(Server.scala:45)
+	at play.core.server.Server$class.getHandlerFor(Server.scala:65)
+	at play.core.server.NettyServer.getHandlerFor(NettyServer.scala:47)
+	at play.core.server.netty.PlayRequestHandler.handle(PlayRequestHandler.scala:82)
+	at play.core.server.netty.PlayRequestHandler.channelRead(PlayRequestHandler.scala:163)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:292)
+	at io.netty.channel.AbstractChannelHandlerContext.fireChannelRead(AbstractChannelHandlerContext.java:278)
+	at com.typesafe.netty.http.HttpStreamsHandler.channelRead(HttpStreamsHandler.java:129)
+	at com.typesafe.netty.http.HttpStreamsServerHandler.channelRead(HttpStreamsServerHandler.java:96)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeChannelRead(AbstractChannelHandlerContext.java:292)
+```
+
+Check your application.conf and make sure there is a value for `hbc.banner=${HBC_BANNER}`      
