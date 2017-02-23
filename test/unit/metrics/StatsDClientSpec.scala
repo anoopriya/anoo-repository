@@ -15,7 +15,7 @@ class StatsDClientSpec extends WordSpec
     host = "dev-workstation",
     port = 8125,
     server = "qa-graphitelt.digital.hbc.com",
-    namespace = "hbc-microservice-template"
+    namespace = "hello-world-service"
   )
 
   "StatsDProtocol" should {
